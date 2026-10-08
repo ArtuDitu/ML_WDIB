@@ -1,0 +1,61 @@
+// Konfiguracja środowiska dla kursu "Praktyczny Machine Learning z PyCaret".
+// GitHub Codespaces (oraz VS Code + Dev Containers) czyta ten plik i automatycznie
+// buduje kontener z Pythonem 3.10 oraz wszystkimi bibliotekami z requirements.txt.
+{
+  "name": "Kurs ML z PyCaret (Python 3.10)",
+
+  // Oficjalny obraz Microsoftu z Pythonem 3.10 (Debian bookworm).
+  // PyCaret 3.x nie działa na Pythonie 3.12+, dlatego wybieramy 3.10.
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.10-bookworm",
+
+  // PyCaret + wykresy potrzebują trochę pamięci; 8 GB ma standardowa maszyna 2-rdzeniowa.
+  "hostRequirements": {
+    "memory": "8gb"
+  },
+
+  // Instalacja bibliotek (pierwsze uruchomienie trwa ok. 5–10 minut, potem już nie).
+  // - pycaret[full], pandas, numpy, matplotlib, seaborn, scikit-learn,
+  //   streamlit, wordcloud, nltk, statsmodels -> patrz requirements.txt
+  // - na końcu pobieramy słowniki NLTK używane w tygodniu 9 (NLP).
+  "updateContentCommand": "python -m pip install --user --upgrade pip && python -m pip install --user -r requirements.txt && python -m nltk.downloader -q stopwords wordnet omw-1.4",
+
+  "postCreateCommand": "echo '✅ Środowisko kursu gotowe! Otwórz folder notebooks/ i zacznij od tygodnia 1.'",
+
+  // Wyłącza zbędny komunikat MLflow wypisywany przy imporcie PyCaret.
+  "containerEnv": {
+    "MLFLOW_DISABLE_AGENT_HINT": "1"
+  },
+
+  // Biblioteki instalujemy z opcją --user, więc polecenia (np. `streamlit`) trafiają do ~/.local/bin –
+  // dopisujemy ten folder do PATH, żeby terminal zawsze je znajdował.
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/home/vscode/.local/bin"
+  },
+
+  // Port aplikacji Streamlit (tydzień 11–12) – Codespaces automatycznie go przekieruje.
+  "forwardPorts": [8501],
+  "portsAttributes": {
+    "8501": {
+      "label": "Aplikacja Streamlit",
+      "onAutoForward": "openBrowser"
+    }
+  },
+
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["README.md"]
+    },
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        // Notebook uruchamia się w swoim folderze (notebooks/), więc ścieżki ../data działają.
+        "jupyter.notebookFileRoot": "${fileDirname}",
+        "notebook.output.textLineLimit": 60
+      }
+    }
+  }
+}

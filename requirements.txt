@@ -1,0 +1,29 @@
+# Środowisko kursu "Praktyczny Machine Learning z PyCaret" (Python 3.10)
+# Uwaga: PyCaret 3.x działa tylko na Pythonie 3.9–3.11.
+# Wersje są przypięte, żeby przez cały semestr wszyscy mieli to samo środowisko.
+
+# PyCaret w wersji pełnej (CPU) – zawiera m.in. UMAP, CatBoost, XGBoost, scikit-optimize
+pycaret[full]==3.3.2
+
+# Podstawowe biblioteki do analizy danych i wykresów
+pandas==2.1.4
+numpy==1.26.4
+matplotlib==3.7.5
+seaborn==0.13.2
+scikit-learn==1.4.2
+statsmodels==0.15.0
+
+# Tekst (NLP) – chmury słów i przetwarzanie języka
+wordcloud==1.9.6
+nltk==3.10.3
+
+# Aplikacje webowe (tydzień 11–12)
+streamlit==1.65.0
+
+# Poprawka zgodności: nowsze wersje dask (2025+) psują moduł szeregów
+# czasowych PyCaret (sktime 0.26). Nie usuwaj tych dwóch linii!
+dask==2024.12.1
+distributed==2024.12.1
+
+# Jądro Jupytera dla VS Code
+ipykernel
